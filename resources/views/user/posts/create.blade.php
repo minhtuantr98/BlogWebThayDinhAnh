@@ -38,9 +38,10 @@
             <div class="form-group">
                 <label>Title</label>
                 <input class="form-control" placeholder="Enter title..." type="text" name="title"><br>
+                <label>Description</label>
+                <textarea class="form-control"  name="description"></textarea>
                 <label>Content</label>
                 <textarea class="form-control" id="summary-ckeditor" name="content"></textarea>
-
                 <label>Category</label>
                 <select class="form-control" name="category">
                     @foreach ($categories as $value)
@@ -50,12 +51,8 @@
                     @endforeach
                 </select><br>
                 <label for="">Time Publish</label>
-                <div class='input-group date' id='datetimepicker1'>
-                    <input name="published"  type='text' class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                </div><br>
+                <input name="published"  type='date' class="form-control" />
+               <br>
                 <label>File Image</label>
                 <input name="file" type="file">
                 <br>

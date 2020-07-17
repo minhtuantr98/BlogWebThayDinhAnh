@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use DB;
+use App\Mail\Mail;
 use App\Post ;
 use App\Category;
 use App\User;
+use App\Email;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +20,7 @@ class PostsController extends Controller
         if(!isset($_GET["title"])) {
             $_GET["title"] = "";
         }
-        $posts = Post::where("title", 'like', '%' . $_GET["title"]. '%')->paginate(5);
+        $posts = Post::where("title", 'like', '%' . $_GET["title"]. '%')->orderBy('active')->orderBy('created_at', 'desc')->paginate(5);
         $categories = Category::all();
         $users = User::all();
         return view('admin.posts.index', compact("posts", "categories", "users"));
@@ -46,18 +48,30 @@ class PostsController extends Controller
         } else {
             $filename = $request->file_old;
         }
+        $check = Post::find($id)->is_highlight == 1 ? 0 : 1;
         Post::find($id)
         ->fill([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'content' => $request->content,
+            'description' => $request->description,
             'category_id' => $request->category,
             'image' => $filename,
             'active' => $request->active,
-            'user_id' => Auth::user()->id,
             'published_at' => $request->published,
+            'is_highlight' => $request->is_highlight
         ])->save();;
+        if ($request->is_highlight == 1 && $check == 1) {
 
+            $details = [
+                'title' => Post::find($id)->title,
+                'link' => 'http://blogweb.test:8000/'.Post::find($id)->slug
+            ];
+            $emails = Email::get();
+            foreach($emails as $item) {
+            \Mail::to($item->email)->send(new Mail($details));
+            }
+        }
         return redirect('admin/post')->with('success', ['Edit Success']);
     }
 
@@ -83,6 +97,7 @@ class PostsController extends Controller
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'content' => $request->content,
+            'description' => $request->description,
             'category_id' => $request->category,
             'image' => $filename,
             'active' => 1,
@@ -97,10 +112,7 @@ class PostsController extends Controller
     {
         Post::findOrFail($id)->delete();
 
-        return Post::where('title', 'like', $request->search .''. '%')
-                    ->where('active', 'like', '%' .$request->active. '%')
-                    ->orderBy('id', 'desc')
-                    ->paginate(5);
+        return redirect('admin/post')->with('success', ['Create Success']);
     }
 
 }

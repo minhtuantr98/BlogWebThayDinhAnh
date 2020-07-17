@@ -28,6 +28,8 @@
                 <div class="form-group">
                     <label>Title</label>
                     <input class="form-control" placeholder="Enter title..." type="text" name="title" value="{{ $post->title }}"><br>
+                    <label>Description</label>
+                <textarea class="form-control"  name="description">{{ $post->description }}</textarea>
                     <label>Content</label>
                     <textarea class="form-control" id="summary-ckeditor" name="content">{{ $post->content }}</textarea>
                         <label>Category</label>
@@ -42,12 +44,8 @@
                                 @endforeach
                         </select><br>
                         <label for="">Time Publish</label>
-                    <div class='input-group date' id='datetimepicker1'>
-                    <input name="published" value="{{ $post->published_at }}"  type='text' class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div><br>
+                    <input name="published" value="{{ $post->published_at }}"  type='date' class="form-control" />
+                   <br>
                         <label>File Image</label>
                     <input name="file" type="file">
                     <input type="text" name="file_old" readonly value="{{$post->image}}">

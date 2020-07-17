@@ -1,33 +1,49 @@
-@extends('layouts/app')
+@extends('layouts/backend')
+
 
 @section('content')
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Dashboard</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="/home">Home</a></li>
             <li class="breadcrumb-item "><a href="/admin/category">Category</a></li>
             <li class="breadcrumb-item ">Edit</li>
-        </ol>
-    </nav>
-    <div class="panel panel-default">
-        <div class="panel-heading"><h1>{{ "Edit Category" }}</h1></div>
-        @if (count($errors) > 0)
-        <div class="alert alert-danger">
-          <strong>Sorry !</strong> There were some problems with your input.<br><br>
-          <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        </div>
-        @endif
-  
-          @if(session('success'))
-          <div class="alert alert-success">
-            {{ session('success') }}
-          </div> 
-          @endif
-        <div class="panel-body">
-            <br>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="panel-heading">
+                <h1>{{ "Create Post" }}</h1>
+            </div>
+            @if (count($errors) > 0)
+            <div class="alert alert-danger">
+              <strong>Sorry !</strong> There were some problems with your input.<br><br>
+              <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+            @endif
+        
+              @if(session('success'))
+              <div class="alert alert-success">
+                {{ session('success') }}
+              </div> 
+              @endif
+          <!-- /.card-header -->
+          <div class="card-body">
             <form action="/admin/category/{{ $category->id }}" method="post">
                 {{ csrf_field() }}
                 {{ method_field('PUT') }}
@@ -37,6 +53,10 @@
                     <input class="btn btn-primary" type="submit" value="Lưu"><br>
                 </div>
             </form>
+          </div>
+          <!-- /.card-body -->
         </div>
+      </div>
     </div>
+</div>
 @endsection

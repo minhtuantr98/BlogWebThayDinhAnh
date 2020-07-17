@@ -14,17 +14,39 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    return view('homepage');
+});
+
+Route::get('/home', function () {
+    return view('homepage');
+});
+
+Route::get('/backend', function () {
+    return view('layouts.backend');
 });
 
 Auth::routes();
 
-Route::get('/admin', 'HomeController@index')->name('home');
+Route::get('/category/{slug}', 'PostsController@listByCategory');
+Route::get('/admin', 'Admin\HomeController@index');
+Route::get('/Api/getListComment/{id}', 'ApiController@getListComment');
+Route::post('/search/postlist', 'ApiController@searchPost');
+Route::get('/{slug}', 'ApiController@getPostDetail');
+Route::post('/post/addComment', 'ApiController@addComment');
+Route::post('/post/deleteComment', 'ApiController@deleteComment');
+Route::post('/post/countComment', 'ApiController@countComment');
+Route::get('/pages/contact', 'HomePageController@showContact');
+Route::get('/pages/about', 'HomePageController@showAbout');
+Route::post('subscribe', 'HomePageController@addEmail');
 Route::get('/test', function() {
     return view("test");
 });
+
+Route::get('/Api/getListPost', 'ApiController@getListPost');
 Route::prefix('admin')->group(function () {
     Route::group(['middleware' => 'admin'], function() {
+
+    Route::get('/home', 'Admin\HomeController@index');
     Route::get('/category', 'Admin\CategoriesController@index');
 
     Route::get('/category/{id}/edit', 'Admin\CategoriesController@edit');
@@ -60,10 +82,15 @@ Route::prefix('admin')->group(function () {
     Route::put('/user/{id}', 'Admin\UsersController@update');
 
     Route::delete('/user/{id}', 'Admin\UsersController@destroy');
+
+    Route::get('/comment', 'Admin\CommentController@index'); 
+
+    Route::delete('/comment/{id}', 'Admin\CommentController@destroy');
     });
 });
 
 Route::prefix('user')->group(function () {
+    Route::group(['middleware' => 'user'], function() {
     Route::get('/info/{id}/edit', 'User\InfoController@edit');
     Route::put('/info/{id}', 'User\InfoController@update');
     Route::get('/password/{id}/edit', 'User\InfoController@getPassword');
@@ -80,4 +107,5 @@ Route::prefix('user')->group(function () {
     Route::put('/post/{id}', 'User\PostsController@update');
 
     Route::delete('/post/{id}', 'User\PostsController@destroy');
+});
 });

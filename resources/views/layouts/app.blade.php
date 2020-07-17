@@ -90,6 +90,10 @@
                                     <a class="dropdown-item" href="/user/info/{{ Auth::user()->id }}/edit">
                                         {{ __('Info') }}
                                     </a>
+                                    @else 
+                                    <a class="dropdown-item" href="/admin/home">
+                                        {{ __('Admin Dashboard') }}
+                                    </a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -118,11 +122,8 @@
                             <div class="card-body">
                                 <nav id="menu">
                                     <ul>
-                                        <li><a href="/admin/category">Quản lý thể loại </a></li>
-                                        <li><a href="/admin/post">Quản lý bài viết</a></li>
-                                        <li><a href="/admin/user">Quản lý người dùng</a></li>
-                                        <li><a href="/admin/comment">Quản lý comment</a></li>
-                                        <li><a href="#">Thống kê & Báo cáo</a></li>
+                                        <li><a href="/user/post">Quản lý bài viết</a></li>
+                                    <li><a href="/user/info/{{ Auth::user()->id }}/edit">Quản lý Thông tin cá nhân</a></li>
                                     </ul>
                                 </nav>
                             </div>

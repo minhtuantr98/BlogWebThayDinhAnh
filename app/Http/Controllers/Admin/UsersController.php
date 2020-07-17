@@ -17,7 +17,7 @@ class UsersController extends Controller
         if(!isset($_GET["name"])) {
             $_GET["name"] = "";
         }
-        $users = User::where("name", 'like', '%' . $_GET["name"]. '%')->paginate(5);
+        $users = User::where("name", 'like', '%' . $_GET["name"]. '%')->orderBy('created_at', 'desc')->paginate(5);
 
         return view('admin.users.index', compact('users'));
     }

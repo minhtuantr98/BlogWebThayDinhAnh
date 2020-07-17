@@ -16,7 +16,7 @@ class InfoController extends Controller
   
     public function edit($id)   
     {
-        return view('user.info.edit');
+        return view('user.info.edit', compact("id"));
     }
 
     public function update(Request $request)
@@ -26,10 +26,19 @@ class InfoController extends Controller
             'email' => 'required|unique:users,email,'.Auth::user()->id.'',
         ]);
 
+        if ($request->hasFile('file')) {
+            $filename = $request->file->getClientOriginalName();
+            $request->file->storeAs('public/upload', $filename);
+        } else {
+            $filename = $request->file_old;
+        }
+        
         Auth::user()
             ->fill([
                 'name' => $request->name,
                 'email' => $request->email,
+                'description' => $request->description,
+                'image' => $filename
             ])
             ->save();
         

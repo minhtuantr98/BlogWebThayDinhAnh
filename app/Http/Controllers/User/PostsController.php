@@ -6,6 +6,7 @@ use DB;
 use App\Post ;
 use App\Category;
 use App\User;
+use App\Comment;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,7 @@ class PostsController extends Controller
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'content' => $request->content,
+            'description' => $request->description,
             'category_id' => $request->category,
             'image' => $filename,
             'published_at' => $request->published,
@@ -72,22 +74,31 @@ class PostsController extends Controller
             'title' => 'required|unique:posts,title',
             'file' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
+        $filename ="no-file.jpg";
         if ($request->hasFile('file')) {
             $filename = $request->file->getClientOriginalName();
             $request->file->storeAs('public/upload', $filename);
-
-            Post::forceCreate([
+        }
+        Post::forceCreate([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'content' => $request->content,
+            'description' => $request->description,
             'category_id' => $request->category,
             'image' => $filename,
             'active' => 0,
             'user_id' => Auth::user()->id,
             'published_at' => $request->published,
+            ]);
+            
+            $id_post = Post::where("title", $request->title)->firstOrFail()->id;
+            if ($id_post != null) {
+                Comment::forceCreate([
+                'user_id' => Auth::user()->id,
+                'post_id' => $id_post,
+                'content' => "Tác giả: Mong mọi người cùng góp ý và cho mình lời nhận xét nhaaaa <3",
         ]);
-        }
+            }
         return redirect('user/post')->with('success', ['Create Success']);
     }
 

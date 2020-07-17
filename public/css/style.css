@@ -9294,3 +9294,39 @@ textarea.form-control {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+
+/* Load more */
+.load-more{
+  width: 99%;
+  background: #15a9ce;
+  text-align: center;
+  color: white;
+  padding: 10px 0px;
+  font-family: sans-serif;
+}
+
+.load-more:hover{
+  cursor: pointer;
+}
+
+/* Finish */
+.finish{
+  width: 99%;
+  background: darkgray;
+  text-align: center;
+  color: white;
+  padding: 10px 0px;
+  font-family: sans-serif;
+}
+
+/* more link */
+.more{
+  color: blue;
+  text-decoration: none;
+  letter-spacing: 1px;
+  font-size: 16px;
+}
+
+[v-cloak] {
+  display:none;
+}
